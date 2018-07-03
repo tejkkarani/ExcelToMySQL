@@ -1,5 +1,7 @@
 from xlrd import open_workbook
+import xlrd
 from pprint import pprint
+import datetime
 import mysql.connector
 from mysql.connector import errorcode,Error
 cnx = mysql.connector.connect(user='root', password='', host='localhost', port='3306', database='Student')
@@ -12,6 +14,11 @@ for s in wb.sheets():
         col_value = {}
         for name, col in zip(col_names, range(s.ncols)):
             value = s.cell(row,col).value
+            if type(value) is float:
+                if len(str(value))==7 and name.value!='Registration No.':
+                    value = datetime.datetime(*xlrd.xldate_as_tuple(value, wb.datemode))
+                    value=value.strftime('%m/%d/%Y')
+                else:
                     value = int(value)
             col_value[name.value]=value
         values.append(col_value)
