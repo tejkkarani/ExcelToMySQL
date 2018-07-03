@@ -12,14 +12,12 @@ for s in wb.sheets():
         col_value = {}
         for name, col in zip(col_names, range(s.ncols)):
             value = s.cell(row,col).value
-            try:
-                value = str(int(value))
-            except :
-                pass
+                    value = int(value)
             col_value[name.value]=value
         values.append(col_value)
 pprint(values)
-add_Student = ("INSERT INTO ieee " "(FormNo, MembershipDate, Status, Surname, FirstName, MiddleName, MothersName, Year, Class, RollNo, RegNo, DOB, PassingYear, EmailID, PhoneNo, Address, Pincode) " "VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s, %s)")
-data_Student = (values[0]['Form No.'], values[0]['Date of Membership Taken'], values[0]['Status'], values[0]['Surname'], values[0]['First Name'], values[0]["Father's Name"], values[0]["Mother's Name"], values[0]['Year'], values[0]['Class(Only DIV)'], values[0]['Roll No.'], values[0]['Registration No.'], values[0]['Date Of Birth'], values[0]['Year Of Passing'], values[0]['Email ID'], values[0]['Contact No.'], values[0]['Address'], values[0]['Pincode'])
-cursor.execute(add_Student, data_Student)
-cnx.commit()
+for data in values:
+    add_Student = ("INSERT INTO ieee " "(FormNo, MembershipDate, Status, Surname, FirstName, MiddleName, MothersName, Year, Class, RollNo, RegNo, DOB, PassingYear, EmailID, PhoneNo, Address, Pincode) " "VALUES (%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s,%s, %s, %s, %s, %s)")
+    data_Student = (data['Form No.'], data['Date of Membership Taken'], data['Status'], data['Surname'], data['First Name'], data["Father's Name"], data["Mother's Name"], data['Year'], data['Class(Only DIV)'], data['Roll No.'], data['Registration No.'], data['Date Of Birth'], data['Year Of Passing'], data['Email ID'], data['Contact No.'], data['Address'], data['Pincode'])
+    cursor.execute(add_Student, data_Student)
+    cnx.commit()
